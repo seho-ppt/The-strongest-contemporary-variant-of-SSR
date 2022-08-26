@@ -40,3 +40,7 @@ The last comment block of each slide will be treated as slide notes. It will be 
 - 实现Island架构的全栈框架(Astro, Qwik)
 - 孤岛组件化 / 孤岛细粒度 的双维度对抗
 - Code
+
+---
+
+# 什么是SSR,CSR?
