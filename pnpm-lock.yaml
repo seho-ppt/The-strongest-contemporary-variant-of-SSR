@@ -1,14 +1,22 @@
 lockfileVersion: 5.4
 
 specifiers:
+  '@iconify-json/icon-park': ^1.1.5
+  '@iconify-json/logos': ^1.1.14
   '@slidev/cli': ^0.27.16
+  '@slidev/theme-apple-basic': ^0.20.0
   '@slidev/theme-default': '*'
   '@slidev/theme-seriph': '*'
 
 dependencies:
   '@slidev/cli': 0.27.20
+  '@slidev/theme-apple-basic': 0.20.0
   '@slidev/theme-default': 0.21.2
   '@slidev/theme-seriph': 0.21.3
+
+devDependencies:
+  '@iconify-json/icon-park': 1.1.5
+  '@iconify-json/logos': 1.1.14
 
 packages:
 
@@ -88,6 +96,18 @@ packages:
       '@iconify/types': 1.1.0
     dev: false
 
+  /@iconify-json/icon-park/1.1.5:
+    resolution: {integrity: sha512-5llfUtp8Dth3inJnLYqTdIVaYEV565yWO6htrXVOYnJfj0gG+iPdGMOe+sPrVrGg68dZSn7L0EOwbZMBusRjKQ==}
+    dependencies:
+      '@iconify/types': 1.1.0
+    dev: true
+
+  /@iconify-json/logos/1.1.14:
+    resolution: {integrity: sha512-SvSxKubQbP/7Wdb3loShUeRGv82ejkNo5gjzvJzQeauntuU4aZjDrx0mnkhFZgNYd3li/mxvzPn79Xc5SGVliw==}
+    dependencies:
+      '@iconify/types': 1.1.0
+    dev: true
+
   /@iconify-json/ph/1.1.2:
     resolution: {integrity: sha512-NuTdtt/UmuxIHS4hfdyv3BP5JiWikNkr81hFHXDScXlH0GUMdRSY/B5T9vDvbXDY/esMLFnIAXoFVDLsGinhpw==}
     dependencies:
@@ -96,7 +116,6 @@ packages:
 
   /@iconify/types/1.1.0:
     resolution: {integrity: sha512-Jh0llaK2LRXQoYsorIH8maClebsnzTcve+7U3rQUSnC11X4jtPnFuyatqFLvMxZ8MLG8dB4zfHsbPfuvxluONw==}
-    dev: false
 
   /@iconify/utils/1.0.33:
     resolution: {integrity: sha512-vGeAqo7aGPxOQmGdVoXFUOuyN+0V7Lcrx2EvaiRjxUD1x6Om0Tvq2bdm7E24l2Pz++4S0mWMCVFXe/17EtKImQ==}
@@ -261,6 +280,16 @@ packages:
     dependencies:
       '@slidev/types': 0.27.20
       js-yaml: 4.1.0
+    dev: false
+
+  /@slidev/theme-apple-basic/0.20.0:
+    resolution: {integrity: sha512-sjgxAyn63TNHsiwT/Iz2D8IjpuOg/x8l+nG2TTH3zg8XChIo7uYcNNApWH+i5zuBfaNHHUOaGLPaZw5s6fINQg==}
+    engines: {node: '>=14.0.0', slidev: '>=0.19.3'}
+    dependencies:
+      '@slidev/types': 0.22.7
+      codemirror-theme-vars: 0.1.1
+      prism-theme-vars: 0.2.4
+      theme-vitesse: 0.1.14
     dev: false
 
   /@slidev/theme-default/0.21.2:

@@ -7,8 +7,13 @@
   },
   "dependencies": {
     "@slidev/cli": "^0.27.16",
+    "@slidev/theme-apple-basic": "^0.20.0",
     "@slidev/theme-default": "*",
     "@slidev/theme-seriph": "*"
   },
-  "name": "ppt-island"
+  "name": "ppt-island",
+  "devDependencies": {
+    "@iconify-json/icon-park": "^1.1.5",
+    "@iconify-json/logos": "^1.1.14"
+  }
 }
