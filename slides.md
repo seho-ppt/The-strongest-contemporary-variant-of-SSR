@@ -126,4 +126,93 @@ CSR只有一个空html文档, 通常会引用一个或多个js文件, 这就意�
 
 ---
 
+# 强交互性
+
+> SSR虽然对于高权重的电商网站/官网, 是非常有用的, 但是对于低权重的网站, 它只是一个简单的静态页面, 并不能满足用户的需求, 因此它不是一个好的选择; 当我们用户需要在网站上做强交互时, 比如频繁跳转页面等, 那么使用SSR就会造成过多的网络往返 (或者服务器压力).
+
+vue router.ts
+```ts
+import { createRouter, createWebHashHistory } from 'vue-router'
+
+const router = createRouter({
+  history: createWebHashHistory(),
+  routes: [
+    //...
+  ],
+})
+```
+
+<v-click>
+
+通常的单页应用路由是用hash实现, 它是一个锚点, vue会根据#后的url去切换不同的页面, 这个切换的过程全程是js完成的, 因此不需要额外的服务器压力, 只需要等待js文件加载完成, 就可以显示网页了.
+
+
+```bash
+https://localhost:8080/#/home
+```
+</v-click>
+
+---
+
 # 针对缺点和优点进行选型
+
+> SSR的主要优点
+
+- SSR效果很好
+- 首屏渲染性能更好
+
+<br/>
+
+> CSR的主要优点
+
+- 强交互场景下节省网络往返
+- 没有服务端压力
+
+---
+
+# 鱼和熊掌可以兼得-同构架构
+
+> 通用渲染方案: 同构架构即SSR + CSR
+
+在首屏下, 通过Nodejs渲染页面, 在非首屏下, 通过浏览器渲染页面. 这样既保证了SEO的需求和首屏可交互性, 也保证了在强交互场景下用户所需要的用户体验, 也减少了服务器压力.
+
+```ts
+asyncData({ store, fetch, route }) {
+  // 首次加载页面, 会经过nodejs请求api
+  return fetch('/api/data').then(res => res.json())
+}
+```
+
+Nuxt.js / Next.js 都是这么做的, 在同构架构下, 我们的js代码需要同时运行在浏览器和服务器上, 所以我们需要框架来尽可能的磨平客户端和服务端的api差异, 并且提供一个独立的模块, 来保存同构代码.
+
+> 那么Nuxt这一类的全栈框架是如何做到静态页面使其仍然可以交互呢?
+
+---
+
+# 喝水 / 脱水 / 注水
+
+<div class="flex justify-between items-center mt-10">
+  <div class="item mt-5" style="width: 20%;">
+    <img src="https://static.yinzhuoei.com/typecho/2021/11/10/35243711893279/1.png" alt="">
+    <div class="text-center mt-5">喝水</div>
+    <div class="text-xs text-center mt-2">将数据流补充到页面上下文中 (服务端) </div>
+  </div>
+  <div class="item mt-5" style="width: 20%;">
+    <img src="https://static.yinzhuoei.com/typecho/2021/11/10/355283501440982/fpic6008.jpeg" alt="">
+    <div class="text-center mt-5">脱水</div>
+    <div class="text-xs text-center mt-2">客户端需要直出HTML, 需要把数据嵌入到静态的HTML</div>
+  </div>
+  <div class="item mt-5" style="width: 20%;">
+    <img src="https://static.yinzhuoei.com/typecho/2021/11/10/35243711893279/1.png" alt="">
+    <div class="text-center mt-5">注水</div>
+    <div class="text-xs text-center mt-2">客户端执行/下载静态页面中的JS, 使其页面重新变得可交互</div>
+  </div>
+</div>
+
+---
+
+# 在Vite中实现注水功能
+
+> 在Vite中给我们提供了一部分的SSR功能, 虽然是实验性的, 但是非常有助于我们理解注水实现
+
+- 
