@@ -215,4 +215,69 @@ Nuxt.js / Next.js 都是这么做的, 在同构架构下, 我们的js代码需�
 
 > 在Vite中给我们提供了一部分的SSR功能, 虽然是实验性的, 但是非常有助于我们理解注水实现
 
-- 
+- 实现asyncData函数
+
+```ts
+export const render = async (url) => {
+  const { app, router } = createApp()
+    router.push(url)
+    await router.isReady()
+    let data = {}
+    // 命中路由组件，且执行asyncData这个函数
+    if (router.currentRoute.value.matched[0].components.default.asyncData) {
+      const asyncFunc = router.currentRoute.value.matched[0].components.default.asyncData
+      data = asyncFunc.call()
+    }
+    const html = await renderToString(app)
+    return { html, data }
+}
+```
+
+---
+
+# 脱水序列化 (Vite Server)
+
+- 我们需要把上一个部分拿到的data和html字符串在服务端进行脱水, 原理就是把data合并到html中
+
+```ts {5|6-7|8-10|all}
+app.use('*', async (req, res) => {
+  try {
+    const url = req.originalUrl
+    let template = readFileSync(resolve('index.html'), 'utf-8')
+    template = await vite.transformIndexHtml(url, template)
+    const { render } = await vite.ssrLoadModule('./src/entry-server.js')
+    const { html: appHtml, data } = await render(url)
+    // 拼接标签，把data序列化插入到文档中
+    const html = template.replace(`<!--ssr-outlet-->`, `${appHtml}<script>window.__data__=${JSON.stringify(data)}</script>`)
+    res.status(200).set({ 'Content-Type': 'text/html' }).end(html)
+  } catch (error) {}
+})
+```
+
+- 同理, 我们的Vuex数据也是这样持久化data的, 当在客户端时, 只需要将各种类型的data, 重新注入到实例中, 我们的Vue组件就可以正常交互了
+
+---
+
+# 注水
+
+- 将已经序列化的data和初始化的空data进行合并
+
+```ts {8-14|all}
+router.isReady().then(() => {
+  const component = router.currentRoute.value.matched[0].components.default
+  let _data = {}
+  // 判断是否是函数
+  if (typeof component.data === 'function') {
+    _data = component.data.call()
+  }
+  // 判断是否有脱水的data
+  if (window.__data__) {
+    _data = {
+      ..._data,
+      ...window.__data__
+    }
+  }
+  component.data = () => _data
+  app.mount('#app')
+})
+```
