@@ -14,6 +14,7 @@
   "name": "ppt-island",
   "devDependencies": {
     "@iconify-json/icon-park": "^1.1.5",
-    "@iconify-json/logos": "^1.1.14"
+    "@iconify-json/logos": "^1.1.14",
+    "@iconify-json/simple-icons": "^1.1.24"
   }
 }

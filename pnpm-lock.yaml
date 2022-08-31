@@ -3,6 +3,7 @@ lockfileVersion: 5.4
 specifiers:
   '@iconify-json/icon-park': ^1.1.5
   '@iconify-json/logos': ^1.1.14
+  '@iconify-json/simple-icons': ^1.1.24
   '@slidev/cli': ^0.27.16
   '@slidev/theme-apple-basic': ^0.20.0
   '@slidev/theme-default': '*'
@@ -17,6 +18,7 @@ dependencies:
 devDependencies:
   '@iconify-json/icon-park': 1.1.5
   '@iconify-json/logos': 1.1.14
+  '@iconify-json/simple-icons': 1.1.24
 
 packages:
 
@@ -113,6 +115,12 @@ packages:
     dependencies:
       '@iconify/types': 1.1.0
     dev: false
+
+  /@iconify-json/simple-icons/1.1.24:
+    resolution: {integrity: sha512-BqRpp0WIzc/Wzezg2jx0BfMvhxQcDqMOfhu9geVLDxRMqNcj9Aisi+MNacbB0it3Aot44MT2PqCa3H762Iu/XA==}
+    dependencies:
+      '@iconify/types': 1.1.0
+    dev: true
 
   /@iconify/types/1.1.0:
     resolution: {integrity: sha512-Jh0llaK2LRXQoYsorIH8maClebsnzTcve+7U3rQUSnC11X4jtPnFuyatqFLvMxZ8MLG8dB4zfHsbPfuvxluONw==}
