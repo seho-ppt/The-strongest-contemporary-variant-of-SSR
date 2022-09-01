@@ -291,11 +291,13 @@ router.isReady().then(() => {
 
 - 服务器运维成本降低
 - 页面更新频率 (是否特别依赖及时更新, 比如资讯网站需要频繁更新)
+- 偏向服务端侧渲染 (Pre-rendering) 或者在客户端渲染上做文章
 - 根据前端全栈框架演变的不同渲染方法 (框架的不同也可能造就渲染模式的差异, 因为其核心理念不同)
+- 根据部署平台的特点, 比如Vercel, 也有独有的渲染方法ISR (静态增量渲染生成)
 
 ---
 
-# SSG
+# SSG (Pre-rendering)
 
 > SSG指的就是在服务端间歇性生成静态页面的渲染方式
 
@@ -311,10 +313,27 @@ router.isReady().then(() => {
 
 ---
 
-# Nuxt3 - 混合模式 + 边缘侧渲染
+# Nuxt3 - 混合模式
 
 在这一章中主要介绍偏Nuxt3的新通用渲染模式, 在传统的全栈框架, 我们可以在整个程序中选择单独一种作为渲染方案, 而现在你可以根据路由使用多种渲染方案:
 
 - a路由构建生成静态页面
 - b路由使用服务端渲染
 - c路由使用客户端渲染
+
+Nuxt得益于最新的JS服务器引擎 (Nitro), 实现了路由缓存以及边缘侧渲染
+
+```ts
+export default defineNuxtConfig({
+  routes: {
+    '/': { prerender: true }, // Once per build (via builder)
+    '/blog/*': { static: true }, // Once on-demand per build (via lambda)
+    '/stats/*': { swr: '10 min' }, // Once on-demand each 10 minutes (via lambda)
+    '/admin/*': { ssr: false }, // Client-Side rendered
+    '/react/*': { redirect: '/vue' }, // Redirect Rules
+  }
+})
+```
+
+---
+
