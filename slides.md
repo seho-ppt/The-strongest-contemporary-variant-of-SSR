@@ -337,3 +337,6 @@ export default defineNuxtConfig({
 
 ---
 
+# Island(孤岛)架构
+
+> 你有没有想过不管是CSR/SSR及其变种都已经非常成熟, 为什么前端圈子还要再继续演变新的架构体系
