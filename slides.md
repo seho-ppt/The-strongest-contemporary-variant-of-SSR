@@ -37,6 +37,7 @@ The last comment block of each slide will be treated as slide notes. It will be 
 - SSR变种盘点
 - SPA & MPA
 - 什么是Island(孤岛)架构
+- Island和微前端的区别
 - 为什么要使用Island
 - 实现Island架构的全栈框架(Astro, Qwik)
 - 孤岛组件化 / 孤岛细粒度 的双维度对抗
@@ -46,7 +47,7 @@ The last comment block of each slide will be treated as slide notes. It will be 
 
 # 什么是SSR
 
-- SSR (Server Side Rendering) 指的就是在服务端组装网页内容的渲染技术, 例如JSP,PHP或者传统多页HTML应用, 对于客户端而言可以避免多次的HTTP请求, 更利于SEO/首屏渲染速度提升.
+- SSR (Server Side Rendering) 指的就是在服务端组装网页内容的渲染技术, 例如JSP,PHP应用, 对于客户端而言可以避免多次的HTTP请求, 更利于SEO/首屏渲染速度提升.
 
 <!-- 显示网站web -->
 <div>
@@ -305,7 +306,7 @@ router.isReady().then(() => {
 
 比如在资讯网站,用户看到的文章内容都是一样的,那么就可以把需要多次渲染的文章页面,只用渲染生成一次缓存到服务器中,当下一次请求就可以直接返回已经生成好的html给客户端; 这就意味着用户看到的内容不会是最新的, 有可能服务器会在1分钟/1小时才会生成/缓存一次.
 
-静态生成的网站, 你可以非常方便的通过CI部署在CDN / Vercel / Cloudflare上
+静态生成的网站, 你可以非常方便的通过CI部署在Vercel / Cloudflare上
 
 <div class="flex justify-start items-center">
   <logos-cloudflare class="text-8xl"/>
@@ -358,8 +359,9 @@ export default defineNuxtConfig({
   <logos-react class="text-4xl ml-4" />
 </div>
 
+<br/>
 
-
+> 我们简单回顾了SPA & MPA的概念, 这将有助我们理解接下来的island架构和其背后代表的全栈框架
 ---
 
 # Island(孤岛)架构
@@ -397,6 +399,13 @@ export default defineNuxtConfig({
 
 - 每一个交互式孤岛组件是完全隔离的, 意味着不会影响彼此的渲染, 静态内容亦是如此.
 - 不会限制你的技术栈, 即UI层渲染
-- 异步交互, 在初次渲染时不会有JS加载
+- 异步交互, 在初次渲染时不会有JS
+
+我们了解到了动态孤岛组件的特征之后, 就可以来了解一下其实现细节
+---
+
+# 动态孤岛组件实现细节
 
 ---
+
+# 微前端? 还是渐进式增强?
