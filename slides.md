@@ -215,7 +215,7 @@ Nuxt.js / Next.js 都是这么做的, 在同构架构下, 我们的js代码需�
 
 ---
 
-# 在Vite中实现注水功能
+# Vite中实现asyncData
 
 > 在Vite中给我们提供了一部分的SSR功能, 虽然是实验性的, 但是非常有助于我们理解注水实现
 
@@ -240,7 +240,7 @@ export const render = async (url) => {
 
 ---
 
-# 脱水序列化 (Vite Server)
+# Vite脱水序列化
 
 - 我们需要把上一个部分拿到的data和html字符串在服务端进行脱水, 原理就是把data合并到html中
 
@@ -361,7 +361,7 @@ export default defineNuxtConfig({
 
 <br/>
 
-> 我们简单回顾了SPA & MPA的概念, 这将有助我们理解接下来的island架构和其背后代表的全栈框架
+> 我们简单回顾了SPA & MPA的概念, 这将有助我们理解接下来的Island架构和其背后代表的全栈框架
 ---
 
 # Island(孤岛)架构
@@ -381,7 +381,7 @@ export default defineNuxtConfig({
 
 # 孤岛一词的含义
 
-<img width="400" height="200" class="m-auto" src="https://res.cloudinary.com/wedding-website/image/upload/v1596766231/islands-architecture-1.png"/>
+<img width="400" height="200" class="m-auto" src="https://res.cloudinary.com/wedding-website/image/upload/v1596766231/Islands-architecture-1.png"/>
 
 <br/>
 
@@ -406,6 +406,77 @@ export default defineNuxtConfig({
 
 # 动态孤岛组件实现细节
 
+> 当我们实现一个孤岛动态组件时, 在服务端会将js剥离:
+
+```tsx
+import { useState } from "preact/hooks";
+
+const Card = () => {
+  const [count, setCount] = useState(0);
+  const add = () => {
+    setCount(count + 1);
+  };
+  return (
+    <div>
+      <div>{count}</div>
+      <button onclick={add}>ADD</button>
+    </div>
+  );
+};
+
+```
+
+```html
+
+<Island url="***/card" renderer-url="nodemodules/preact.js">
+  <div>
+    <div>0</div>
+    <button>ADD</button>
+  </div>
+</Island>
+
+```
+
+---
+
+
+# 动态孤岛组件渲染 & 激活
+
+> 渲染的时机取决于Island相关框架的设计, 但是默认情况下会在服务端渲染为静态html, 那么动态组件重新激活/注水的时机有可能是立即的, 也有可能是异步的.
+
+如果在业务场景下, 你希望你的购买按钮能够立即显示, 那么此时页面显示时就会让组件重新注水
+
+```html
+<button>立即购买</button>
+```
+
+那么还有一些场景下, 组件并不在可视区域, 如果此时立即注水, 那么就会造成性能浪费
+
+```html
+<footer>
+  <Concat></Concat>
+</footer>
+```
+
+<br/>
+
+> 所以Island体系下的框架, 会给动态组件提供多种激活策略, 比如: 可视区域激活, 延迟激活, 立即激活, 媒体查询激活, 甚至是手动激活.
+
 ---
 
 # 微前端? 还是渐进式增强?
+
+- 微前端?
+
+我们现在对Island架构有了一个初步的认识, 你也有可能和我一样在初次学习时和微前端概念有所混淆, 因为它们都提倡把应用程序分解为独立单元(进行部署), 但是微前端的每个单元并不完全使用html实现.
+
+- 渐进式增强?
+
+众所周知Vue是一门渐进式框架, 大家也都相当熟悉渐进式的意思, 它与Island一样, 有着渐进式概念; Island在SSR的基础上加入了类微前端概念提供了独立的组件单元, 使其交互变得更自由, 性能更贴近原始HTML. 在传统渐进式增强中, 我们通常会在客户端查询元素并且在元素上初始化一个动态函数, 而在Island中, 动态组件将经过服务端, 由服务端生成一个专属此组件的js文件, 让组件自给自足
+
+ (初始化一切组件为html -> 异步加载js -> 激活/注水).
+
+---
+
+# Island框架盘点
+
