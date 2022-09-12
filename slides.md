@@ -39,7 +39,7 @@ The last comment block of each slide will be treated as slide notes. It will be 
 - 什么是Island(孤岛)架构
 - Island和微前端的区别
 - 为什么要使用Island
-- 实现Island架构的全栈框架(Astro, Qwik)
+- 实现Island架构的全栈框架(Astro, Qwik, Fresh)
 - 孤岛组件化 / 孤岛细粒度 的双维度对抗
 - Code
 
@@ -547,10 +547,23 @@ const Card = () => {
 
 # Island框架盘点 - Fresh
 
+> Fresh是deno核心作者开源的一套“下一代web框架”, 它基于deno且仅使用Preact作为UI层渲染
+
+- 基于deno, 有安全性, 以及高性能的运行时(jsx & ts)
+- 因为运行时是deno缘故, fresh是没有构建流程的, 而且island组件都是异步即时加载(JIT)
+- 同样由于deno, 它对部署平台非常苛刻, 如果你选择在边缘部署, 就只能选择官方的Deno Deploy
+- fresh的核心就是路由系统 + 模板引擎, 所以页面都是在服务端即使渲染的
+
+个人不推荐使用fresh部署你的网站, 因为从以下几个角度出发
+
+- 基于deno的生态, 需要一定的学习成本和踩坑成本
+- 它仅支持preact作为你的UI渲染
+- 孤岛组件在客户端激活策略单一
 
 ---
 
 
 # Island框架如何做到组件隔离
 
-> 我们已经了解到了Island的基本原理以及动态组件相关内容, 那么对比传统架构, Island如何做到组件之间的隔离呢?
+> 我们已经了解到了Island的基本原理以及动态组件, 相关框架, 那么对比传统架构, Island如何做到组件之间的隔离呢?
+
