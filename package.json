@@ -1,7 +1,7 @@
 {
   "private": true,
   "scripts": {
-    "build": "slidev build",
+    "build": "slidev build --base /The-strongest-contemporary-variant-of-SSR/",
     "dev": "slidev --open",
     "export": "slidev export"
   },
