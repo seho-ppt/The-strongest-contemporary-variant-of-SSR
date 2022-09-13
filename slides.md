@@ -41,7 +41,6 @@ The last comment block of each slide will be treated as slide notes. It will be 
 - 为什么要使用Island
 - 实现Island架构的全栈框架(Astro, Qwik, Fresh)
 - 孤岛组件化 / 孤岛细粒度 的双维度对抗
-- Code
 
 ---
 
@@ -162,7 +161,7 @@ https://localhost:8080/#/home
 
 > SSR的主要优点
 
-- SSR效果很好
+- SEO效果很好
 - 首屏渲染性能更好
 
 <br/>
@@ -190,6 +189,14 @@ asyncData({ store, fetch, route }) {
 Nuxt.js / Next.js 都是这么做的, 在同构架构下, 我们的js代码需要同时运行在浏览器和服务器上, 所以我们需要框架来尽可能的磨平客户端和服务端的api差异, 并且提供一个独立的模块, 来保存同构代码.
 
 > 那么Nuxt这一类的全栈框架是如何做到静态页面使其仍然可以交互呢?
+
+<!--
+asyncData(){
+ return {
+  hello: "world"
+ }
+}
+-->
 
 ---
 
@@ -516,7 +523,7 @@ const Card = () => {
 
 # Astro代码演示
 
-<iframe style="width: 60vw;height: 50vh;" src="https://stackblitz.com/edit/github-hfsxr7?embed=1&file=src/pages/index.astro"></iframe>
+<iframe style="width: 50vw;height: 40vw;" src="https://stackblitz.com/edit/github-hfsxr7?embed=1&file=src/pages/index.astro"></iframe>
 
 ---
 
@@ -540,7 +547,7 @@ const Card = () => {
 # Qwik代码演示
 
 
-<iframe style="width: 60vw;height: 50vh;" src="https://stackblitz.com/edit/qwik-vite-todoapp-a6ndeo?embed=1&file=index.html"></iframe>
+<iframe style="width: 50vw;height: 40vw;" src="https://stackblitz.com/edit/qwik-vite-todoapp-a6ndeo?embed=1&file=index.html"></iframe>
 
 
 ---
@@ -563,7 +570,58 @@ const Card = () => {
 ---
 
 
-# Island框架如何做到组件隔离
+# 你应该选择细度更高的孤岛吗?
 
-> 我们已经了解到了Island的基本原理以及动态组件, 相关框架, 那么对比传统架构, Island如何做到组件之间的隔离呢?
+> 你已经了解了 3 个孤岛框架的特点, 我们将着重分析Astro以及Qwik的优势, 它们在激活组件策略上有很大的不同;
 
+Astro:
+
+```html
+<Card client:visible/>
+```
+
+Qwik:
+
+```html
+<input
+  onInput$={(event) => {
+    const input = event.target as HTMLInputElement;
+    state.name = input.value;
+  }}
+></input>
+```
+
+<br/>
+
+> 如果你的网站中需要针对动态孤岛组件进行非常细度定制化, 比如在“联系我们”组件中, 输入邮箱的操作是低频的, 其余组件是静态组件, 我们就可以使用Qwik框架将性能损耗压到最小; 但是反之你的网站有大量的交互组件, 而且你希望有多种激活策略(且可以用多种UI框架去构建), 那么Astro就是你的最佳选择;
+
+---
+
+# 国内外前端技术走向
+
+> 不知道你有没有注意到, 从APP的潮流出现, 瓜分了大量的web流量之后, 国内外前端技术就走了不同的道路, 国外前端技术往往更注重用户体验, 国内前端技术却更注重业务需要和技术快速变现;
+
+- 以前的时代, 我们都是用类jquery/jsp/php去完成前端, 出现了很多由服务端渲染的页面, 到此国内外研究的技术是一样的.
+
+- app的出现将web流量抢占, 按理说我们应该提升web体验去留住用户; 但是我们却发明了APP中打开APP(小程序), 而且每一家平台的小程序标准都不一样, 所以又有了一类的跨端小程序框架去帮助我们完成需求.
+
+- 而国外开发者为了留住web用户进而推进了PWA规范, 从nuxt, next, remix这一类服务端/同构渲染框架开始, 又演变了如今的island架构, 他们真正的目标是为了提升用户体验, 将业务最主要的功能(比如购买按钮)最先展示.
+
+> 用户最先看到核心业务, 能给企业带来什么?
+
+
+---
+
+# island架构带来了什么?
+
+页面访问速度很重要么? 对于商业网站来说的确是的, 缓慢的访问速度可能会损失数百万美元, 在web.dev中有一份例子:
+
+- 对于Mobify，每 低100 毫秒的转化速度提高 1%,主页加载速度每降低 100 毫秒,基于会话的转化率就会增加 1.11%, 平均年收入增长近 380,000 美元.
+
+- 当 AutoAnything 将页面加载时间缩短一半时,销售额提高了50%，销售额提高了12%到13%。
+
+- Pinterest的注册速度提高了40%，从15%的注册时间缩短了40%，搜索引擎流量和注册次数增加了15%。
+
+- BBC发现，他们的网站每加载一秒钟，就会额外失去10%的用户。
+
+> 所以, 请重视你的互联网产品页面加载速度以及TTI时间
