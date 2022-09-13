@@ -9,7 +9,8 @@
     "@slidev/cli": "^0.27.16",
     "@slidev/theme-apple-basic": "^0.20.0",
     "@slidev/theme-default": "*",
-    "@slidev/theme-seriph": "*"
+    "@slidev/theme-seriph": "*",
+    "playwright-chromium": "^1.25.2"
   },
   "name": "ppt-island",
   "devDependencies": {
